@@ -33,7 +33,7 @@ export function CharacterCard() {
       <div className="flex flex-1 items-center justify-center bg-[#151515]">
         <img
           src={asset("assets/character.gif")}
-          alt="Pixel-art illustration of Bhavna at her laptop with headphones, a sleeping cat beside her"
+          alt="Pixel-art illustration of Bhavana at her laptop with headphones, a sleeping cat beside her"
           className="pixelated w-full object-cover"
           width={508} height={337}
         />

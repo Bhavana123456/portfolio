@@ -1,7 +1,7 @@
 // Personal details. This is the only file you edit by hand — projects, stats and
 // articles are generated automatically by scripts/sync.ts.
 export const site = {
-  name: "Bhavna Acharya",
+  name: "Bhavana Acharya",
   title: "Senior Engineer",
   tagline: "Building useful products, end to end.",
   intro:
