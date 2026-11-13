@@ -1,39 +1,64 @@
 // Designed, animated project previews in the portfolio palette.
 // Used when a repo has no screenshot/preview image of its own.
 
-/** chain-of-thought — a prompt flowing through an audited reasoning chain. */
+/** chain-of-thought — what the model saw, how it reasoned, and why it decided. */
 export function AuditTracePreview() {
-  const steps = [
-    { k: "Prompt", v: "Should this claim be approved?" },
-    { k: "Retrieve", v: "policy.pdf · claim_2041.json" },
-    { k: "Reason", v: "Coverage matches clause 4.2" },
-    { k: "Decision", v: "Approve · confidence 0.92" },
+  const evidence = [
+    { id: "E1", src: "policy.pdf §4.2", text: "Water damage covered if sudden", score: 0.94 },
+    { id: "E2", src: "claim_2041.json", text: "Pipe burst · reported same day", score: 0.88 },
+    { id: "E3", src: "policy.pdf §7.1", text: "Excludes gradual leaks", score: 0.61 },
   ];
+  const steps = [
+    { k: "Prompt", v: "Approve claim #2041?", cites: [] as string[] },
+    { k: "Reason", v: "Sudden burst, not gradual leak", cites: ["E2", "E3"] },
+    { k: "Check", v: "Matches covered event", cites: ["E1"] },
+    { k: "Decision", v: "Approve · 0.92 confidence", cites: ["E1", "E2"] },
+  ];
+  const t = (i: number) => ({ animationDelay: `${i * 0.7}s` });
   return (
-    <div className="pv relative flex h-full gap-4 p-5 text-[11px]">
+    <div className="pv relative flex h-full gap-3 p-4 text-[10.5px] leading-snug">
+      {/* reasoning chain */}
       <ol className="relative flex flex-1 flex-col justify-between">
-        <span className="absolute bottom-3 left-[5px] top-3 w-px bg-line" aria-hidden />
-        <span className="pv-trace absolute left-[5px] top-3 w-px bg-sage" aria-hidden />
+        <span className="absolute bottom-2 left-[4px] top-2 w-px bg-line" aria-hidden />
+        <span className="pv-trace absolute left-[4px] top-2 w-px bg-sage" aria-hidden />
         {steps.map((s, i) => (
-          <li key={s.k} className="pv-step relative flex items-start gap-3" style={{ animationDelay: `${i * 0.9}s` }}>
-            <span className="pv-dot relative z-10 mt-0.5 h-[11px] w-[11px] shrink-0 rounded-full border border-line bg-card" style={{ animationDelay: `${i * 0.9}s` }} />
+          <li key={s.k} className="pv-step relative flex items-start gap-2.5" style={t(i + 1)}>
+            <span className="pv-dot relative z-10 mt-0.5 h-[9px] w-[9px] shrink-0 rounded-full border border-line bg-card" style={t(i + 1)} />
             <span className="min-w-0">
-              <span className="block text-[10px] uppercase tracking-[0.14em] text-mute">{s.k}</span>
+              <span className="block text-[9px] uppercase tracking-[0.14em] text-mute">{s.k}</span>
               <span className="block truncate text-ink/90">{s.v}</span>
+              {s.cites.length > 0 && (
+                <span className="mt-0.5 flex gap-1">
+                  {s.cites.map((c) => <span key={c} className="rounded border border-sage/40 px-1 text-[9px] text-sage">{c}</span>)}
+                </span>
+              )}
             </span>
           </li>
         ))}
       </ol>
-      <div className="hidden w-[38%] flex-col rounded-xl border border-line bg-card/80 p-3 sm:flex">
-        <span className="text-[10px] uppercase tracking-[0.14em] text-mute">Audit record</span>
-        <div className="mt-3 space-y-2">
-          {[78, 92, 64, 85, 56].map((w, i) => (
-            <span key={i} className="pv-line block h-1.5 rounded-full bg-mute/30" style={{ width: `${w}%`, animationDelay: `${0.4 + i * 0.6}s` }} />
-          ))}
+      {/* evidence + why */}
+      <div className="hidden w-[46%] flex-col gap-2 sm:flex">
+        <div className="rounded-lg border border-line bg-card/80 p-2.5">
+          <span className="text-[9px] uppercase tracking-[0.14em] text-mute">Evidence retrieved</span>
+          <ul className="mt-1.5 space-y-1.5">
+            {evidence.map((e, i) => (
+              <li key={e.id} className="pv-step" style={t(i * 0.6 + 0.5)}>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="truncate"><span className="text-sage">{e.id}</span> <span className="text-mute">{e.src}</span></span>
+                  <span className="tabular-nums text-mute">{e.score.toFixed(2)}</span>
+                </div>
+                <div className="truncate text-ink/85">{e.text}</div>
+                <span className="mt-0.5 block h-[3px] rounded-full bg-line">
+                  <span className="pv-line block h-full rounded-full bg-sage/70" style={{ width: `${e.score * 100}%`, ...t(i * 0.6 + 0.5) }} />
+                </span>
+              </li>
+            ))}
+          </ul>
         </div>
-        <span className="pv-badge mt-auto inline-flex w-fit items-center gap-1.5 rounded-full border border-sage/40 px-2 py-0.5 text-[10px] text-sage">
-          <span className="h-1 w-1 rounded-full bg-sage" /> traceable
-        </span>
+        <div className="pv-badge rounded-lg border border-sage/40 bg-card/80 p-2.5">
+          <span className="text-[9px] uppercase tracking-[0.14em] text-sage">Why approved</span>
+          <p className="mt-1 text-ink/90">Burst was sudden (E2), which §4.2 covers (E1); the §7.1 exclusion doesn't apply.</p>
+        </div>
       </div>
     </div>
   );
