@@ -39,27 +39,45 @@ export const site = {
   shipped: [
     {
       title: "AI feature UI integration",
+      context: "Healthcare payments · 2025–present",
       problem: "Users reviewing healthcare payments needed relevant policy information without leaving the workflow they were already in.",
       contribution: "Built the UI and API integration for an AI-powered policy retrieval feature, surfacing payment-integrity policies inside existing screens.",
       decision: "Embedded retrieval directly into existing workflows instead of a separate tool, so answers appear where the decision is being made.",
     },
     {
       title: "Data-heavy workflows",
+      context: "Healthcare payments · 2025–present",
       problem: "Payment-integrity work involves high-value, sensitive healthcare data (Medicare, Medicaid) where a confusing screen means costly mistakes.",
       contribution: "Shipped 20+ production features across 3–5 client implementations — data-intensive React and TypeScript interfaces backed by REST APIs.",
       decision: "Worked spec-first: each feature starts from a written spec, so implementation, expected behaviour and code review stay aligned across clients.",
     },
     {
       title: "Rendering performance & observability",
+      context: "Procurement platform · 2023–2025",
       problem: "A procurement and supplier-onboarding portal had to stay fast and dependable on both desktop and mobile (PWA).",
       contribution: "Architected the portal and optimised rendering and load behaviour; set up Datadog dashboards and alerts for production monitoring.",
       decision: "Used custom hooks, memoisation and code splitting to cut unnecessary re-renders and initial load, and added monitoring so regressions show up early.",
     },
     {
       title: "Reusable React component systems",
+      context: "Across roles · 2020–present",
       problem: "Teams kept rebuilding the same UI patterns, which slowed delivery and made screens inconsistent.",
       contribution: "Built a Storybook-documented component library (file uploaders, dynamic tables, configurable cards), migrated class components to hooks, and mentored developers through reviews and React/TypeScript training.",
       decision: "Moved state to Redux and Context API with function components and hooks, so shared components stay simple and data flow is predictable.",
+    },
+    {
+      title: "Interactive learning experiences",
+      context: "EdTech · 2020–2023",
+      problem: "Students learning online needed exercises that felt engaging, not like static worksheets, on any screen size.",
+      contribution: "Built interactive math games and applets with React, TypeScript and the Cocos engine, plus responsive Tailwind UIs; later led frontend development for major student-facing features.",
+      decision: "Built the applets as reusable TypeScript components, so new exercises could be assembled from existing pieces instead of written from scratch.",
+    },
+    {
+      title: "Engineering practices & AI-assisted delivery",
+      context: "Across roles · 2021–present",
+      problem: "Fast feature delivery across clients and teams risks inconsistent code quality.",
+      contribution: "Mentored developers through code reviews and pair programming, ran React and TypeScript training, and improved testing, review and deployment practices.",
+      decision: "Use Claude Code to speed up implementation, debugging and refactoring, while reviewing every generated change against the spec for correctness and maintainability.",
     },
   ],
 };

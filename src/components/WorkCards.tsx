@@ -9,14 +9,16 @@ export function ShippedCard() {
       <span className="label">What I've shipped</span>
       <p className="mt-2 text-sm text-mute">6+ years of production frontend work with React and TypeScript.</p>
       <ul className="mt-4 divide-y divide-line border-y border-line">
-        {site.shipped.map((s) => {
+        {site.shipped.map((s, i) => {
           const rows = [["Problem", s.problem], ["My contribution", s.contribution], ["Key decision", s.decision]].filter(([, v]) => v);
-          if (!rows.length) return <li key={s.title} className="py-3 text-[15px]">{s.title}</li>;
           return (
             <li key={s.title}>
-              <details className="group py-3">
+              <details className="group py-3" open={i === 0}>
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-[15px] marker:hidden">
-                  {s.title}
+                  <span>
+                    <span className="block">{s.title}</span>
+                    <span className="mt-0.5 block text-xs text-mute">{s.context}</span>
+                  </span>
                   <ChevronDown size={16} className="shrink-0 text-mute transition-transform group-open:rotate-180 group-hover:text-sage" />
                 </summary>
                 <dl className="mt-3 space-y-2.5 border-l border-line pl-4">
