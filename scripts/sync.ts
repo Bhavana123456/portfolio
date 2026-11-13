@@ -119,6 +119,19 @@ async function analyse(repo: Repo) {
 
   // Preview priority: screenshot in public/previews/<repo>.png here, then one committed in the repo itself.
   const localPreview = existsSync(new URL(`../public/previews/${repo.name}.png`, import.meta.url));
+  // Case study: first paragraph under README headings like "Problem", "Key decision", "Limitations".
+  const section = (re: RegExp) => {
+    const m = readme.match(new RegExp(`^#{2,4}\\s*(?:the\\s+|my\\s+)?(?:${re.source})[^\\n]*\\n+([\\s\\S]*?)(?=\\n#{1,4}\\s|(?![\\s\\S]))`, "im"));
+    if (!m) return null;
+    const para = m[1].replace(/```[\s\S]*?```/g, "").split(/\n\s*\n/).map((x) => x.replace(/^[-*]\s+/gm, "").replace(/[*_`]/g, "").replace(/\s+/g, " ").trim()).find(Boolean);
+    return para ? (para.length > 240 ? para.slice(0, 237).trimEnd() + "…" : para) : null;
+  };
+  const caseStudy = {
+    problem: section(/problem|why|motivation/),
+    decision: section(/key (?:technical )?decision|approach|architecture|how it works/),
+    limitations: section(/limitations?|trade-?offs?|known issues/),
+  };
+
   const preview = files.find((f) => /(screenshot|preview|demo|cover)[^/]*\.(png|jpe?g|gif|webp)$/i.test(f));
 
   return {
@@ -130,6 +143,7 @@ async function analyse(repo: Repo) {
     preview: localPreview ? `previews/${repo.name}.png` : preview ? `https://raw.githubusercontent.com/${USER}/${repo.name}/${repo.default_branch}/${preview}` : null,
     kind,
     tech: [...tech].slice(0, 8),
+    caseStudy,
     stars: repo.stargazers_count,
     pushedAt: repo.pushed_at,
     meaningfulFiles: meaningful.length,

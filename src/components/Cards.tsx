@@ -83,7 +83,8 @@ function ProjectBody({ p, label }: { p: Project; label: string }) {
       </div>
       <span className="label">{label}</span>
       <h3 className="mt-2 text-xl font-medium">{p.title}</h3>
-      {p.description && <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-mute">{p.description}</p>}
+      {p.description && <p className="mt-2 text-sm leading-relaxed text-mute">{p.description}</p>}
+      {p.caseStudy && <CaseStudy cs={p.caseStudy} />}
       <div className="mt-4 flex flex-wrap gap-1.5">{p.tech.map((t) => <span key={t} className="tag">{t}</span>)}</div>
       <div className="mt-auto flex gap-5 pt-5">
         <ArrowLink href={p.url}>GitHub</ArrowLink>
@@ -109,6 +110,21 @@ export function ProjectCards() {
       {extension && <Card id={ai ? undefined : "projects"} delay={0.12} className="md:col-span-1 lg:col-span-3"><ProjectBody p={extension} label="Featured · Chrome extension" /></Card>}
       {s.data.more.length > 0 && <MoreProjects projects={s.data.more} />}
     </>
+  );
+}
+
+function CaseStudy({ cs }: { cs: NonNullable<Project["caseStudy"]> }) {
+  const rows = [["Problem", cs.problem], ["Key decision", cs.decision], ["Limitations", cs.limitations]].filter(([, v]) => v);
+  if (!rows.length) return null;
+  return (
+    <dl className="mt-4 space-y-2.5 border-l border-line pl-4">
+      {rows.map(([k, v]) => (
+        <div key={k}>
+          <dt className="text-[10px] uppercase tracking-[0.14em] text-mute">{k}</dt>
+          <dd className="mt-0.5 text-sm leading-relaxed text-ink/90">{v}</dd>
+        </div>
+      ))}
+    </dl>
   );
 }
 
@@ -227,7 +243,14 @@ export function ContactCard() {
           ))}
         </ul>
         </div>
-        <ContactForm />
+        {site.contactFormEndpoint ? <ContactForm /> : email && (
+          <a href={`mailto:${email}`} className="group flex flex-col justify-center rounded-2xl border border-line p-6 transition-colors hover:border-sage/60">
+            <span className="label">Email me directly</span>
+            <span className="mt-2 flex items-center gap-2 break-all text-xl font-medium sm:text-2xl">{email}
+              <ArrowUpRight size={20} className="shrink-0 text-mute transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-sage" /></span>
+            <span className="mt-2 text-sm text-mute">I usually reply within a day or two.</span>
+          </a>
+        )}
       </div>
     </Card>
   );

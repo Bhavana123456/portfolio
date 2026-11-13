@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T08:54:49.778Z",
+  "generatedAt": "2026-11-13T08:55:20.662Z",
   "featured": {
     "ai": {
       "name": "chain-of-thought",
@@ -19,6 +19,11 @@
         "Ollama",
         "Langfuse"
       ],
+      "caseStudy": {
+        "problem": null,
+        "decision": null,
+        "limitations": null
+      },
       "stars": 0,
       "pushedAt": "2026-03-19T17:20:13Z",
       "meaningfulFiles": 45,
@@ -37,6 +42,11 @@
         "Chrome Extension",
         "JavaScript"
       ],
+      "caseStudy": {
+        "problem": null,
+        "decision": null,
+        "limitations": null
+      },
       "stars": 0,
       "pushedAt": "2026-10-18T20:53:51Z",
       "meaningfulFiles": 6,

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 export interface Project {
   name: string; title: string; description: string | null; url: string; demo: string | null;
   preview: string | null; kind: string; tech: string[]; stars: number; pushedAt: string;
+  caseStudy?: { problem: string | null; decision: string | null; limitations: string | null };
 }
 export interface ProjectsData {
   generatedAt: string;
