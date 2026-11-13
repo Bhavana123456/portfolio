@@ -1,4 +1,4 @@
-import { HeroCard, CharacterCard, NavigationCard, ProjectCards, TechStackCard, LearningCard, GitHubStatsCard, MediumArticlesCard, ContactCard } from "./components/Cards";
+import { HeroCard, CharacterCard, NavigationCard, ProjectCards, TechStackCard, LearningCard, MediumArticlesCard, ContactCard } from "./components/Cards";
 import { site } from "./config";
 
 // Bento grid: 6 columns on desktop, 2 on tablet, 1 on mobile.
@@ -13,7 +13,6 @@ export default function App() {
           <NavigationCard />
           <TechStackCard />
           <LearningCard />
-          <GitHubStatsCard />
           <MediumArticlesCard />
           <ContactCard />
         </div>

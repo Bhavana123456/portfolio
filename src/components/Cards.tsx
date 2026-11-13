@@ -1,9 +1,8 @@
-import { Home, FolderGit2, PenLine, User, Mail, Github, Star, Users, BookOpen, Linkedin, FileText, ArrowUpRight } from "lucide-react";
+import { Home, FolderGit2, PenLine, User, Mail, Github, BookOpen, Linkedin, FileText, ArrowUpRight } from "lucide-react";
 import { site } from "../config";
 import { useState, type FormEvent } from "react";
-import { useProjects, useGitHub, useMedium, fmtDate, asset, type Project } from "../services/data";
+import { useProjects, useMedium, fmtDate, asset, type Project } from "../services/data";
 import { Card, ArrowLink, Muted } from "./Card";
-import { ContributionHeatmap } from "./ContributionHeatmap";
 import { TechIcon } from "./TechIcon";
 import { ProjectPreview } from "./Previews";
 
@@ -173,77 +172,10 @@ export function LearningCard() {
   );
 }
 
-export function GitHubStatsCard() {
-  const s = useGitHub();
-  return (
-    <Card delay={0.18} className="md:col-span-2 lg:col-span-4">
-      <div className="flex items-center justify-between">
-        <span className="label flex items-center gap-2"><Github size={13} /> GitHub</span>
-        {s.status === "ready" && <ArrowLink href={s.data.profileUrl}>@{s.data.login}</ArrowLink>}
-      </div>
-      {s.status === "loading" && <div className="mt-6"><Muted>Loading GitHub activity…</Muted></div>}
-      {s.status === "error" && <div className="mt-6"><Muted>GitHub stats are unavailable right now.</Muted></div>}
-      {s.status === "ready" && (() => {
-        const g = s.data;
-        const stats = [
-          { k: "Repositories", v: g.publicRepos, icon: FolderGit2 },
-          { k: "Stars", v: g.stars, icon: Star },
-          { k: "Followers", v: g.followers, icon: Users },
-          { k: "Following", v: g.following, icon: User },
-        ];
-        return (
-          <>
-            <dl className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {stats.map(({ k, v, icon: Icon }) => (
-                <div key={k} className="rounded-2xl border border-line px-4 py-3">
-                  <dt className="flex items-center gap-1.5 text-[11px] text-mute"><Icon size={12} />{k}</dt>
-                  <dd className="mt-1 text-2xl font-medium tabular-nums">{v}</dd>
-                </div>
-              ))}
-            </dl>
-            {g.contributions && (
-              <div className="mt-5">
-                <p className="mb-2 text-xs text-mute"><span className="text-ink">{g.contributions.total}</span> contributions in the last year</p>
-                <ContributionHeatmap weeks={g.contributions.weeks} />
-              </div>
-            )}
-            <div className="mt-5 grid gap-5 sm:grid-cols-2">
-              <div>
-                <p className="mb-2 text-xs text-mute">Most used languages</p>
-                <div className="flex h-1.5 overflow-hidden rounded-full bg-line">
-                  {g.languages.map((l, i) => (
-                    <span key={l.name} style={{ width: `${l.percent}%`, opacity: 1 - i * 0.18 }} className="bg-sage" />
-                  ))}
-                </div>
-                <ul className="mt-2 space-y-1">
-                  {g.languages.map((l) => (
-                    <li key={l.name} className="flex justify-between text-xs"><span>{l.name}</span><span className="tabular-nums text-mute">{l.percent}%</span></li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <p className="mb-2 text-xs text-mute">Recent activity</p>
-                <ul className="space-y-1.5">
-                  {g.recent.map((r) => (
-                    <li key={r.name} className="flex items-center justify-between gap-2 text-xs">
-                      <a href={r.url} target="_blank" rel="noreferrer" className="truncate hover:text-sage">{r.name}</a>
-                      <span className="shrink-0 text-mute">{fmtDate(r.pushedAt)}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </>
-        );
-      })()}
-    </Card>
-  );
-}
-
 export function MediumArticlesCard() {
   const s = useMedium();
   return (
-    <Card id="blogs" delay={0.2} className="md:col-span-2 lg:col-span-2">
+    <Card id="blogs" delay={0.2} className="md:col-span-2 lg:col-span-6">
       <span className="label flex items-center gap-2"><BookOpen size={13} /> Latest from Medium</span>
       <div className="mt-5">
         {s.status === "loading" && <Muted>Loading articles…</Muted>}
@@ -251,9 +183,9 @@ export function MediumArticlesCard() {
         {s.status === "ready" && !s.data.configured && <Muted>Medium feed not connected yet.</Muted>}
         {s.status === "ready" && s.data.configured && s.data.articles.length === 0 && <Muted>No articles to show right now.</Muted>}
         {s.status === "ready" && s.data.articles.length > 0 && (
-          <ul className="divide-y divide-line">
+          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {s.data.articles.map((a) => (
-              <li key={a.url} className="py-3 first:pt-0 last:pb-0">
+              <li key={a.url} className="rounded-2xl border border-line p-4 transition-colors hover:border-sage/50">
                 <a href={a.url} target="_blank" rel="noreferrer" className="group block">
                   <p className="text-[11px] text-mute">{fmtDate(a.date)}</p>
                   <p className="mt-1 text-sm font-medium leading-snug transition-colors group-hover:text-sage">{a.title}</p>
