@@ -2,10 +2,10 @@
 // articles are generated automatically by scripts/sync.ts.
 export const site = {
   name: "Bhavna Acharya",
-  title: "Product Builder · Developer",
+  title: "Senior Engineer",
   tagline: "Building useful products, end to end.",
   intro:
-    "Developer with 6+ years of experience building digital products. Focused on product engineering, full-stack development and AI-powered applications — from idea to shipped product.",
+    "Engineer with 6+ years of production experience in React and TypeScript, building digital products. Focused on product engineering, full-stack development and AI-powered applications — from idea to shipped product.",
 
   githubUsername: "Bhavana123456",
   // Your Medium handle without the @, e.g. "bhavnaacharya". Leave empty to hide articles.
