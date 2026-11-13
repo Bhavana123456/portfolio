@@ -6,6 +6,7 @@
  * Env: GITHUB_TOKEN (required for contributions), GITHUB_USERNAME, MEDIUM_USERNAME
  */
 import { writeFile, mkdir } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { site } from "../src/config";
 
 const USER = process.env.GITHUB_USERNAME || site.githubUsername;
@@ -66,7 +67,9 @@ async function analyse(repo: Repo) {
   const reqs = files.some((f) => /requirements\.txt|pyproject\.toml/.test(f))
     ? (await ghRaw(repo.name, files.find((f) => /requirements\.txt|pyproject\.toml/.test(f))!)) ?? ""
     : "";
-  const deps = pkgs + "\n" + reqs;
+  // Tools called over HTTP (e.g. Ollama) only show up in env/config files or the README.
+  const envFile = files.find((f) => /(^|\/)\.env\.(example|sample)$/.test(f));
+  const deps = pkgs + "\n" + reqs + "\n" + (envFile ? (await ghRaw(repo.name, envFile)) ?? "" : "") + "\n" + readme;
 
   const hasReact = /"react"/.test(pkgs);
   const hasBackend = /fastapi|flask|django|express|"hono"|"fastify"|nestjs/i.test(deps);
@@ -82,12 +85,13 @@ async function analyse(repo: Repo) {
     [/"react"/, "React"], [/"typescript"/, "TypeScript"], [/"next"/, "Next.js"], [/"vite"/, "Vite"],
     [/tailwindcss/, "Tailwind"], [/fastapi/i, "FastAPI"], [/flask/i, "Flask"], [/django/i, "Django"],
     [/"express"/, "Express"], [/sqlalchemy/i, "SQLAlchemy"], [/openai/i, "OpenAI"], [/anthropic/i, "Anthropic"],
-    [/langchain/i, "LangChain"],
+    [/langchain/i, "LangChain"], [/ollama/i, "Ollama"], [/langfuse/i, "Langfuse"], [/sqlite/i, "SQLite"],
+    [/postgres/i, "PostgreSQL"], [/"recharts"/, "Recharts"],
   ];
   for (const [re, label] of detect) if (re.test(deps)) tech.add(label);
   if (isExtension) tech.add("Chrome Extension");
   if (files.some((f) => /dockerfile/i.test(f))) tech.add("Docker");
-  for (const l of Object.keys(languages).slice(0, 3)) tech.add(l);
+  for (const l of Object.keys(languages).slice(0, 3)) if (!["HTML", "CSS"].includes(l)) tech.add(l);
 
   const demoMatch = readme.match(/https?:\/\/[^\s)]+\.(vercel\.app|netlify\.app|github\.io|railway\.app|onrender\.com)[^\s)]*/i);
   const demo = repo.homepage || demoMatch?.[0] || null;
@@ -113,7 +117,9 @@ async function analyse(repo: Repo) {
   const excerpt = readme.replace(/```[\s\S]*?```/g, "").replace(/[#>*_`!\[\]]|\(.*?\)/g, "")
     .split("\n").map((l) => l.trim()).filter((l) => l.length > 40)[0] ?? null;
 
-  const preview = files.find((f) => /(screenshot|preview|demo|cover)\.(png|jpe?g|gif|webp)$/i.test(f));
+  // Preview priority: screenshot in public/previews/<repo>.png here, then one committed in the repo itself.
+  const localPreview = existsSync(new URL(`../public/previews/${repo.name}.png`, import.meta.url));
+  const preview = files.find((f) => /(screenshot|preview|demo|cover)[^/]*\.(png|jpe?g|gif|webp)$/i.test(f));
 
   return {
     name: repo.name,
@@ -121,9 +127,9 @@ async function analyse(repo: Repo) {
     description: repo.description ?? excerpt,
     url: repo.html_url,
     demo,
-    preview: preview ? `https://raw.githubusercontent.com/${USER}/${repo.name}/${repo.default_branch}/${preview}` : null,
+    preview: localPreview ? `previews/${repo.name}.png` : preview ? `https://raw.githubusercontent.com/${USER}/${repo.name}/${repo.default_branch}/${preview}` : null,
     kind,
-    tech: [...tech].slice(0, 6),
+    tech: [...tech].slice(0, 8),
     stars: repo.stargazers_count,
     pushedAt: repo.pushed_at,
     meaningfulFiles: meaningful.length,
@@ -142,7 +148,11 @@ async function contributions() {
     method: "POST", headers, body: JSON.stringify({ query, variables: { login: USER } }),
   });
   if (!res.ok) return null;
-  const json = await res.json();
+  const json = (await res.json()) as {
+    data?: { user?: { contributionsCollection?: { contributionCalendar?: {
+      totalContributions: number; weeks: { contributionDays: { date: string; contributionCount: number }[] }[];
+    } } } };
+  };
   const cal = json.data?.user?.contributionsCollection?.contributionCalendar;
   if (!cal) return null;
   return {
@@ -197,7 +207,7 @@ async function main() {
   await writeFile(new URL("projects.json", OUT), JSON.stringify({
     generatedAt: now,
     featured: { ai: featuredAi, extension: featuredExt },
-    more: shown.filter((p) => !featuredNames.has(p.name)).slice(0, 6),
+    more: shown.filter((p) => !featuredNames.has(p.name)).slice(0, 12),
     hidden: analysed.filter((p) => p.excludedReason).map(({ name, score, excludedReason }) => ({ name, score, excludedReason })),
   }, null, 2));
 

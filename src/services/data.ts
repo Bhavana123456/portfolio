@@ -25,11 +25,14 @@ export interface MediumData {
 
 export type Async<T> = { status: "loading" } | { status: "error" } | { status: "ready"; data: T };
 
+// Resolves files in public/ against the deploy base path; absolute URLs pass through.
+export const asset = (path: string) => (/^https?:/.test(path) ? path : import.meta.env.BASE_URL + path);
+
 const cache = new Map<string, Promise<unknown>>();
 
 function load<T>(file: string): Promise<T> {
   if (!cache.has(file)) {
-    cache.set(file, fetch(`/data/${file}`).then((r) => {
+    cache.set(file, fetch(asset(`data/${file}`)).then((r) => {
       if (!r.ok) throw new Error(String(r.status));
       return r.json();
     }));

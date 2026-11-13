@@ -1,4 +1,4 @@
-name: Sync portfolio data
+name: Sync and deploy
 
 on:
   schedule:
@@ -8,17 +8,18 @@ on:
     types: [repo-updated]
   push:
     branches: [main]
-    paths: ["scripts/**", "src/config.ts", ".github/workflows/sync.yml"]
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
-  group: sync
+  group: pages
   cancel-in-progress: true
 
 jobs:
-  sync:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,14 +28,28 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      - name: Generate data
+      - name: Sync GitHub + Medium data
         run: npm run sync
         env:
-          # GH_STATS_TOKEN: personal token (read:user) for the contribution calendar; falls back to the built-in token.
+          # GH_STATS_TOKEN: optional personal token (read:user) for private contribution counts.
           GITHUB_TOKEN: ${{ secrets.GH_STATS_TOKEN || secrets.GITHUB_TOKEN }}
-      - name: Commit if changed (Vercel redeploys on push)
+      - name: Commit refreshed data
         run: |
           git config user.name "portfolio-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add public/data
           git diff --cached --quiet || (git commit -m "chore: sync portfolio data" && git push)
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

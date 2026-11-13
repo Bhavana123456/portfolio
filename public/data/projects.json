@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T08:35:35.151Z",
+  "generatedAt": "2026-11-13T08:44:14.404Z",
   "featured": {
     "ai": {
       "name": "chain-of-thought",
@@ -15,7 +15,9 @@
         "Vite",
         "Tailwind",
         "FastAPI",
-        "SQLAlchemy"
+        "SQLAlchemy",
+        "Ollama",
+        "Langfuse"
       ],
       "stars": 0,
       "pushedAt": "2026-03-19T17:20:13Z",
@@ -33,8 +35,7 @@
       "kind": "extension",
       "tech": [
         "Chrome Extension",
-        "JavaScript",
-        "HTML"
+        "JavaScript"
       ],
       "stars": 0,
       "pushedAt": "2026-10-18T20:53:51Z",

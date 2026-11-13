@@ -1,9 +1,11 @@
 import { Home, FolderGit2, PenLine, User, Mail, Github, Star, Users, BookOpen, Linkedin, FileText, ArrowUpRight } from "lucide-react";
 import { site } from "../config";
-import { useProjects, useGitHub, useMedium, fmtDate, type Project } from "../services/data";
+import { useState, type FormEvent } from "react";
+import { useProjects, useGitHub, useMedium, fmtDate, asset, type Project } from "../services/data";
 import { Card, ArrowLink, Muted } from "./Card";
 import { ContributionHeatmap } from "./ContributionHeatmap";
 import { TechIcon } from "./TechIcon";
+import { ProjectPreview } from "./Previews";
 
 export function HeroCard() {
   return (
@@ -31,7 +33,7 @@ export function CharacterCard() {
     <Card id="about" delay={0.05} className="flex flex-col p-0 md:col-span-1 lg:col-span-2 lg:row-span-2">
       <div className="flex flex-1 items-center justify-center bg-[#151515]">
         <img
-          src="/assets/character.gif"
+          src={asset("assets/character.gif")}
           alt="Pixel-art illustration of Bhavna at her laptop with headphones, a sleeping cat beside her"
           className="pixelated w-full object-cover"
           width={508} height={337}
@@ -72,11 +74,13 @@ export function NavigationCard() {
   );
 }
 
-function ProjectBody({ p, label, fallbackPreview }: { p: Project; label: string; fallbackPreview: React.ReactNode }) {
+function ProjectBody({ p, label }: { p: Project; label: string }) {
   return (
     <div className="flex h-full flex-col">
       <div className="mb-5 aspect-[16/9] overflow-hidden rounded-2xl border border-line bg-[#121212]">
-        {p.preview ? <img src={p.preview} alt={`${p.title} preview`} className="h-full w-full object-cover" loading="lazy" /> : fallbackPreview}
+        {p.preview
+          ? <img src={asset(p.preview)} alt={`${p.title} preview`} className="h-full w-full object-cover object-top" loading="lazy" />
+          : <ProjectPreview name={p.name} title={p.title} kind={p.kind} />}
       </div>
       <span className="label">{label}</span>
       <h3 className="mt-2 text-xl font-medium">{p.title}</h3>
@@ -90,24 +94,6 @@ function ProjectBody({ p, label, fallbackPreview }: { p: Project; label: string;
   );
 }
 
-// Abstract previews used only when a repo has no screenshot file.
-const AiPreview = (
-  <div className="flex h-full flex-col justify-center gap-2 p-5 font-mono text-[11px] text-mute">
-    {["prompt → received", "retrieve → 4 sources", "reason → step 3 of 3", "audit → trace written"].map((l, i) => (
-      <div key={l} className="flex items-center gap-2"><span className={i === 3 ? "text-sage" : ""}>›</span>{l}</div>
-    ))}
-  </div>
-);
-const ExtPreview = (
-  <div className="flex h-full items-center justify-center">
-    <div className="w-40 rounded-xl border border-line bg-card p-3 text-left font-mono text-[11px] text-mute">
-      <div className="mb-2 flex gap-1"><span className="h-1.5 w-1.5 rounded-full bg-line" /><span className="h-1.5 w-1.5 rounded-full bg-line" /></div>
-      <div className="text-ink">=^.^= meow</div>
-      <div>focus mode on</div>
-    </div>
-  </div>
-);
-
 export function ProjectCards() {
   const s = useProjects();
   if (s.status !== "ready") {
@@ -120,22 +106,41 @@ export function ProjectCards() {
   const { ai, extension } = s.data.featured;
   return (
     <>
-      {ai && <Card id="projects" delay={0.1} className="md:col-span-1 lg:col-span-3"><ProjectBody p={ai} label="Featured · AI application" fallbackPreview={AiPreview} /></Card>}
-      {extension && <Card id={ai ? undefined : "projects"} delay={0.12} className="md:col-span-1 lg:col-span-3"><ProjectBody p={extension} label="Featured · Chrome extension" fallbackPreview={ExtPreview} /></Card>}
-      {s.data.more.length > 0 && (
-        <Card className="md:col-span-2 lg:col-span-6">
-          <span className="label">More projects</span>
-          <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {s.data.more.map((p) => (
-              <li key={p.name} className="rounded-2xl border border-line p-4">
-                <ArrowLink href={p.url}>{p.title}</ArrowLink>
-                {p.description && <p className="mt-1 line-clamp-2 text-xs text-mute">{p.description}</p>}
-              </li>
-            ))}
-          </ul>
-        </Card>
-      )}
+      {ai && <Card id="projects" delay={0.1} className="md:col-span-1 lg:col-span-3"><ProjectBody p={ai} label="Featured · AI application" /></Card>}
+      {extension && <Card id={ai ? undefined : "projects"} delay={0.12} className="md:col-span-1 lg:col-span-3"><ProjectBody p={extension} label="Featured · Chrome extension" /></Card>}
+      {s.data.more.length > 0 && <MoreProjects projects={s.data.more} />}
     </>
+  );
+}
+
+// Ranked list of other qualifying repos: top 3 shown, the rest behind a toggle.
+function MoreProjects({ projects }: { projects: Project[] }) {
+  const [open, setOpen] = useState(false);
+  const visible = open ? projects : projects.slice(0, 3);
+  return (
+    <Card className="md:col-span-2 lg:col-span-6">
+      <div className="flex items-center justify-between">
+        <span className="label">More projects</span>
+        <ArrowLink href={`${site.links.github}?tab=repositories`}>All repositories</ArrowLink>
+      </div>
+      <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {visible.map((p) => (
+          <li key={p.name} className="flex gap-3 rounded-2xl border border-line p-3">
+            {p.preview && <img src={asset(p.preview)} alt="" className="h-14 w-20 shrink-0 rounded-lg border border-line object-cover object-top" loading="lazy" />}
+            <div className="min-w-0">
+              <ArrowLink href={p.url}>{p.title}</ArrowLink>
+              {p.description && <p className="mt-1 line-clamp-2 text-xs text-mute">{p.description}</p>}
+              <p className="mt-1.5 truncate text-[11px] text-mute/80">{p.tech.slice(0, 3).join(" · ")}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+      {projects.length > 3 && (
+        <button onClick={() => setOpen(!open)} className="mt-4 text-sm text-mute transition-colors hover:text-ink">
+          {open ? "Show less" : `Show ${projects.length - 3} more`}
+        </button>
+      )}
+    </Card>
   );
 }
 
@@ -273,13 +278,12 @@ export function ContactCard() {
   ].filter(Boolean) as { label: string; href: string; icon: typeof Mail }[];
   return (
     <Card id="contact" delay={0.22} className="flex flex-col justify-between md:col-span-2 lg:col-span-6">
-      <div className="grid gap-6 md:grid-cols-[1.4fr_1fr] md:items-end">
-        <div>
+      <div className="grid gap-8 md:grid-cols-2">
+        <div className="flex flex-col">
           <span className="label">Let's connect</span>
           <h2 className="mt-3 font-display font-semibold text-4xl leading-tight tracking-[-0.03em] sm:text-5xl">Let's build something meaningful.</h2>
           <p className="mt-3 max-w-lg text-sm text-mute">Open to opportunities and collaborations in product engineering, software development and AI.</p>
-        </div>
-        <ul className="grid grid-cols-2 gap-2">
+        <ul className="mt-auto grid grid-cols-2 gap-2 pt-6">
           {links.map(({ label, href, icon: Icon }) => (
             <li key={label}>
               <a href={href} {...(href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})}
@@ -290,7 +294,55 @@ export function ContactCard() {
             </li>
           ))}
         </ul>
+        </div>
+        <ContactForm />
       </div>
     </Card>
+  );
+}
+
+const field = "w-full rounded-xl border border-line bg-frame px-4 py-3 text-sm text-ink placeholder:text-mute/70 outline-none transition-colors focus:border-sage/70";
+
+function ContactForm() {
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+
+  async function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!site.contactFormEndpoint) return setStatus("error");
+    setStatus("sending");
+    try {
+      const res = await fetch(site.contactFormEndpoint, {
+        method: "POST", headers: { Accept: "application/json" }, body: new FormData(e.currentTarget),
+      });
+      if (!res.ok) throw new Error();
+      e.currentTarget.reset();
+      setStatus("sent");
+    } catch {
+      setStatus("error");
+    }
+  }
+
+  return (
+    <form onSubmit={submit} className="flex flex-col gap-2.5">
+      <div className="grid gap-2.5 sm:grid-cols-2">
+        <label className="sr-only" htmlFor="c-name">Name</label>
+        <input id="c-name" name="name" required placeholder="Name" className={field} autoComplete="name" />
+        <label className="sr-only" htmlFor="c-email">Email</label>
+        <input id="c-email" name="email" type="email" required placeholder="Email" className={field} autoComplete="email" />
+      </div>
+      <label className="sr-only" htmlFor="c-msg">Message</label>
+      <textarea id="c-msg" name="message" required rows={4} placeholder="What are you building?" className={`${field} resize-none`} />
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-xs text-mute" role="status">
+          {status === "sent" && <span className="text-sage">Thanks — I'll get back to you soon.</span>}
+          {status === "error" && "Couldn't send right now. Please try again later."}
+        </p>
+        <button type="submit" disabled={status === "sending"}
+          className="group inline-flex shrink-0 items-center gap-1.5 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-frame transition-opacity hover:opacity-90 disabled:opacity-50">
+          {status === "sending" ? "Sending…" : "Send message"}
+          <ArrowUpRight size={15} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        </button>
+      </div>
+    </form>
   );
 }

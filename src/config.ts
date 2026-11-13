@@ -5,7 +5,7 @@ export const site = {
   title: "Product Builder · Developer",
   tagline: "Building useful products, end to end.",
   intro:
-    "Developer with 6+ years of experience building digital products. Interested in product engineering, AI, system design and creating thoughtful user experiences.",
+    "Developer with 6+ years of experience building digital products. Focused on product engineering, full-stack development and AI-powered applications — from idea to shipped product.",
 
   githubUsername: "Bhavana123456",
   // Your Medium handle without the @, e.g. "bhavnaacharya". Leave empty to hide articles.
@@ -22,12 +22,15 @@ export const site = {
   techStack: ["React", "TypeScript", "JavaScript", "Python", "FastAPI", "Docker", "GitHub"],
 
   exploring: [
-    "AI / Machine Learning",
-    "Product Management",
     "Product Engineering",
-    "System Design",
-    "Backend Development",
-    "FastAPI",
-    "Data Structures & Algorithms",
+    "AI-powered Products",
+    "LLM Applications",
+    "Full-stack Development",
+    "Product Management",
+    "Backend & APIs",
   ],
+
+  // Contact form endpoint (static hosting has no server). Create a free form at
+  // https://formspree.io and paste its endpoint, e.g. "https://formspree.io/f/abcdwxyz".
+  contactFormEndpoint: "",
 };
