@@ -17,9 +17,9 @@ export function HeroCard() {
         </a>
       </div>
       <div className="mt-10">
-        <h1 className="font-display text-5xl leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl">{site.name}</h1>
+        <h1 className="font-display font-semibold text-5xl leading-[0.95] tracking-[-0.04em] sm:text-6xl lg:text-7xl">{site.name}</h1>
         <p className="mt-3 text-mute">{site.title}</p>
-        <p className="mt-8 max-w-xl font-display text-2xl italic leading-snug text-ink/95 sm:text-3xl">{site.tagline}</p>
+        <p className="mt-8 max-w-xl font-display text-2xl font-medium leading-snug tracking-[-0.02em] text-ink/95 sm:text-3xl">{site.tagline}</p>
         <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-mute">{site.intro}</p>
       </div>
     </Card>
@@ -276,7 +276,7 @@ export function ContactCard() {
       <div className="grid gap-6 md:grid-cols-[1.4fr_1fr] md:items-end">
         <div>
           <span className="label">Let's connect</span>
-          <h2 className="mt-3 font-display text-4xl leading-tight sm:text-5xl">Let's build something meaningful.</h2>
+          <h2 className="mt-3 font-display font-semibold text-4xl leading-tight tracking-[-0.03em] sm:text-5xl">Let's build something meaningful.</h2>
           <p className="mt-3 max-w-lg text-sm text-mute">Open to opportunities and collaborations in product engineering, software development and AI.</p>
         </div>
         <ul className="grid grid-cols-2 gap-2">
