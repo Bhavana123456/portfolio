@@ -163,7 +163,7 @@ async function medium() {
     s.match(new RegExp(`<${tag}>(?:<!\\[CDATA\\[)?([\\s\\S]*?)(?:\\]\\]>)?</${tag}>`))?.[1]?.trim() ?? "";
   const articles = [...xml.matchAll(/<item>([\s\S]*?)<\/item>/g)].slice(0, 5).map(([, item]) => {
     const body = pick(item, "content:encoded");
-    const text = body.replace(/<figure[\s\S]*?<\/figure>/g, "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+    const text = body.replace(/<(figure|pre|h[1-4])[\s\S]*?<\/\1>/g, "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
     return {
       title: pick(item, "title"),
       url: pick(item, "link").split("?")[0],

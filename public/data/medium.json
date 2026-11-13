@@ -1,5 +1,12 @@
 {
-  "generatedAt": "2026-11-13T08:30:22.019Z",
-  "configured": false,
-  "articles": []
+  "generatedAt": "2026-11-13T08:35:06.219Z",
+  "configured": true,
+  "articles": [
+    {
+      "title": "useState Unraveled: More Than Just a React Hook",
+      "url": "https://medium.com/@bhavanaacharya80/usestate-unraveled-more-than-just-a-react-hook-c2505eabbcd6",
+      "date": "2025-03-26T07:48:49.000Z",
+      "summary": "Remember when managing state looked like this? If we compare that with useState hook in React See, it’s easy. So now let’s break it down to see how useState…"
+    }
+  ]
 }

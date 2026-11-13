@@ -9,7 +9,7 @@ export const site = {
 
   githubUsername: "Bhavana123456",
   // Your Medium handle without the @, e.g. "bhavnaacharya". Leave empty to hide articles.
-  mediumUsername: "",
+  mediumUsername: "bhavanaacharya80",
 
   // Leave any link empty to hide it from the contact card.
   links: {
