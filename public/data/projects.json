@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T08:24:34.794Z",
+  "generatedAt": "2026-11-13T08:30:22.019Z",
   "featured": {
     "ai": {
       "name": "chain-of-thought",
@@ -46,11 +46,6 @@
   "more": [],
   "hidden": [
     {
-      "name": "FrontendMentor_challenges",
-      "score": 45,
-      "excludedReason": "too few meaningful files"
-    },
-    {
       "name": "invoice_app",
       "score": 43,
       "excludedReason": "below quality threshold"
@@ -58,11 +53,6 @@
     {
       "name": "stupid-compliments",
       "score": 41,
-      "excludedReason": "too few meaningful files"
-    },
-    {
-      "name": "DevChallenge_ButtonChallenge",
-      "score": 40,
       "excludedReason": "too few meaningful files"
     },
     {
@@ -74,11 +64,6 @@
       "name": "Travel-website--single-page-website",
       "score": 34,
       "excludedReason": "below quality threshold"
-    },
-    {
-      "name": "solutions",
-      "score": 26,
-      "excludedReason": "practice/tutorial"
     },
     {
       "name": "Travel-advisor",
@@ -98,11 +83,6 @@
     {
       "name": "Music-suggestion-extension",
       "score": 6,
-      "excludedReason": "too few meaningful files"
-    },
-    {
-      "name": "Portfolio",
-      "score": 5,
       "excludedReason": "too few meaningful files"
     }
   ]

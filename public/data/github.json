@@ -1,34 +1,39 @@
 {
-  "generatedAt": "2026-11-13T08:24:34.794Z",
+  "generatedAt": "2026-11-13T08:30:22.019Z",
   "profileUrl": "https://github.com/Bhavana123456",
   "login": "Bhavana123456",
-  "publicRepos": 24,
+  "publicRepos": 18,
   "stars": 0,
   "followers": 3,
   "following": 4,
   "languages": [
     {
-      "name": "JavaScript",
-      "percent": 28.5
+      "name": "TypeScript",
+      "percent": 26.5
     },
     {
-      "name": "TypeScript",
-      "percent": 24.4
+      "name": "JavaScript",
+      "percent": 25.8
     },
     {
       "name": "HTML",
-      "percent": 23.6
+      "percent": 23.2
     },
     {
       "name": "Python",
-      "percent": 14.8
+      "percent": 16.1
     },
     {
       "name": "CSS",
-      "percent": 8.6
+      "percent": 8.4
     }
   ],
   "recent": [
+    {
+      "name": "portfolio",
+      "url": "https://github.com/Bhavana123456/portfolio",
+      "pushedAt": "2026-11-13T08:29:25Z"
+    },
     {
       "name": "slacking-meow",
       "url": "https://github.com/Bhavana123456/slacking-meow",
@@ -38,11 +43,6 @@
       "name": "stupid-compliments",
       "url": "https://github.com/Bhavana123456/stupid-compliments",
       "pushedAt": "2026-05-30T18:17:58Z"
-    },
-    {
-      "name": "Fragments",
-      "url": "https://github.com/Bhavana123456/Fragments",
-      "pushedAt": "2026-03-26T11:03:29Z"
     },
     {
       "name": "future-fragments",
@@ -642,7 +642,7 @@
         },
         {
           "date": "2026-03-26",
-          "count": 3
+          "count": 2
         },
         {
           "date": "2026-03-27",
@@ -1526,11 +1526,11 @@
       [
         {
           "date": "2026-10-18",
-          "count": 0
+          "count": 1
         },
         {
           "date": "2026-10-19",
-          "count": 2
+          "count": 1
         },
         {
           "date": "2026-10-20",
@@ -1636,7 +1636,7 @@
         },
         {
           "date": "2026-11-13",
-          "count": 0
+          "count": 1
         }
       ]
     ]
