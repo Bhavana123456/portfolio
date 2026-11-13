@@ -15,7 +15,7 @@ export default {
       fontFamily: {
         sans: ['"Inter"', "system-ui", "sans-serif"],
         display: ['"Inter"', "system-ui", "sans-serif"],
-        mono: ['"JetBrains Mono"', "ui-monospace", "monospace"],
+        mono: ['"Inter"', "system-ui", "sans-serif"],
       },
       borderRadius: { card: "1.5rem", frame: "2.25rem" },
     },

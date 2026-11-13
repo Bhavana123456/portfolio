@@ -4,7 +4,7 @@ import { Github, Container, Zap } from "lucide-react";
 const Txt = ({ t }: { t: string }) => (
   <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden>
     <rect x="2.5" y="2.5" width="19" height="19" rx="3" fill="none" stroke="currentColor" strokeWidth="1.4" />
-    <text x="12" y="16" textAnchor="middle" fontSize="8.5" fontFamily="JetBrains Mono, monospace" fill="currentColor">{t}</text>
+    <text x="12" y="16" textAnchor="middle" fontSize="8.5" fontFamily="Inter, sans-serif" fontWeight="600" fill="currentColor">{t}</text>
   </svg>
 );
 
