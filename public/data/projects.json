@@ -1,0 +1,109 @@
+{
+  "generatedAt": "2026-11-13T08:24:34.794Z",
+  "featured": {
+    "ai": {
+      "name": "chain-of-thought",
+      "title": "Chain Of Thought",
+      "description": "Traceability matrix using ai audit trail , a middleware that sits between an LLM and end user. it records the prompt , retrives the data and the logic steps that generates a human readable audit showing exactly what piece led to the final decision",
+      "url": "https://github.com/Bhavana123456/chain-of-thought",
+      "demo": null,
+      "preview": null,
+      "kind": "ai",
+      "tech": [
+        "React",
+        "TypeScript",
+        "Vite",
+        "Tailwind",
+        "FastAPI",
+        "SQLAlchemy"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-03-19T17:20:13Z",
+      "meaningfulFiles": 45,
+      "score": 69,
+      "excludedReason": null
+    },
+    "extension": {
+      "name": "slacking-meow",
+      "title": "Slacking Meow",
+      "description": "cats who meows if it finds you slacking  :D",
+      "url": "https://github.com/Bhavana123456/slacking-meow",
+      "demo": null,
+      "preview": null,
+      "kind": "extension",
+      "tech": [
+        "Chrome Extension",
+        "JavaScript",
+        "HTML"
+      ],
+      "stars": 0,
+      "pushedAt": "2026-10-18T20:53:51Z",
+      "meaningfulFiles": 6,
+      "score": 52,
+      "excludedReason": null
+    }
+  },
+  "more": [],
+  "hidden": [
+    {
+      "name": "FrontendMentor_challenges",
+      "score": 45,
+      "excludedReason": "too few meaningful files"
+    },
+    {
+      "name": "invoice_app",
+      "score": 43,
+      "excludedReason": "below quality threshold"
+    },
+    {
+      "name": "stupid-compliments",
+      "score": 41,
+      "excludedReason": "too few meaningful files"
+    },
+    {
+      "name": "DevChallenge_ButtonChallenge",
+      "score": 40,
+      "excludedReason": "too few meaningful files"
+    },
+    {
+      "name": "productivity_tracker",
+      "score": 39,
+      "excludedReason": "below quality threshold"
+    },
+    {
+      "name": "Travel-website--single-page-website",
+      "score": 34,
+      "excludedReason": "below quality threshold"
+    },
+    {
+      "name": "solutions",
+      "score": 26,
+      "excludedReason": "practice/tutorial"
+    },
+    {
+      "name": "Travel-advisor",
+      "score": 25,
+      "excludedReason": "too few meaningful files"
+    },
+    {
+      "name": "Bhavana123456",
+      "score": 23,
+      "excludedReason": "too few meaningful files"
+    },
+    {
+      "name": "future-fragments",
+      "score": 10,
+      "excludedReason": "too few meaningful files"
+    },
+    {
+      "name": "Music-suggestion-extension",
+      "score": 6,
+      "excludedReason": "too few meaningful files"
+    },
+    {
+      "name": "Portfolio",
+      "score": 5,
+      "excludedReason": "too few meaningful files"
+    }
+  ]
+}

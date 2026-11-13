@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { scroll-behavior: smooth; }
+body { @apply bg-paper font-sans text-ink antialiased; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+.pixelated { image-rendering: pixelated; }
+.tag { @apply rounded-full border border-line px-2.5 py-1 text-xs text-mute; }
+.label { @apply font-mono text-[11px] uppercase tracking-[0.14em] text-mute; }
